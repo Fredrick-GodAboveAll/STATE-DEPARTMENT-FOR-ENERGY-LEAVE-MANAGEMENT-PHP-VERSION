@@ -1,290 +1,346 @@
-# LEAVE MANAGEMENT SYSTEM - PHP BASED VERSION
+# LEAVE MANAGEMENT SYSTEM – Complete Documentation (v3)
 
-A comprehensive Leave Management System built with PHP, designed for the State Department for Energy to manage employee leave requests, holidays, and related administrative tasks.
+A comprehensive, production‑ready PHP‑based Leave Management System built on a custom MVC architecture. It features secure authentication, role‑based access (admin/user), employee management, leave tracking, holiday management, and a modern responsive UI powered by the Falcon Bootstrap template.
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-STATE-DEPARTMENT-FOR-ENERGY-LEAVE-MANAGEMENT-PHP/
+project-root/
 │
-├── app/                               # Main application code directory
+├── app/
+│   ├── Controllers/           # Handle HTTP requests and responses
+│   │   ├── Controller.php     # Base controller
+│   │   ├── AuthController.php # Login, logout, registration, password reset
+│   │   ├── DashboardController.php
+│   │   ├── EmployeeController.php
+│   │   ├── LeaveController.php
+│   │   ├── HolidayController.php
+│   │   ├── DepartmentController.php
+│   │   ├── LeaveTypeController.php
+│   │   └── ErrorController.php
 │   │
-│   ├── Controllers/                   # Handles request logic and business operations
-│   │   ├── Controller.php             # Base controller class - parent for all controllers
-│   │   ├── AuthController.php         # Authentication/Login/Logout operations
-│   │   ├── AppController.php          # General application controller
-│   │   ├── ApiController.php          # API endpoints and data responses
-│   │   ├── DashboardController.php    # Dashboard data and statistics
-│   │   ├── DepartmentController.php   # Department management (CRUD operations)
-│   │   ├── EmployeeController.php     # Employee management and profiles
-│   │   ├── LeaveController.php        # Leave request processing and management
-│   │   └── HolidaysController.php     # Holiday setup and management
+│   ├── Models/                 # Database interaction
+│   │   ├── Model.php
+│   │   ├── User.php
+│   │   ├── PasswordReset.php
+│   │   ├── Employee.php
+│   │   ├── Leave.php
+│   │   ├── Holiday.php
+│   │   ├── Department.php
+│   │   └── LeaveType.php
 │   │
-│   ├── Models/                        # Database layer - data access and queries
-│   │   ├── Model.php                  # Base model class with common DB methods
-│   │   ├── User.php                   # User/Admin data model
-│   │   ├── Employee.php               # Employee information model
-│   │   └── Holiday.php                # Holiday calendar data model
+│   ├── Services/                # Business logic layer
+│   │   ├── AuthService.php
+│   │   ├── EmployeeService.php
+│   │   ├── LeaveService.php
+│   │   ├── HolidayService.php
+│   │   ├── DepartmentService.php
+│   │   └── LeaveTypeService.php
 │   │
-│   ├── Views/                         # UI Templates - HTML/PHP templates
-│   │   ├── layouts/                   # Layout templates for page structure
-│   │   │   ├── auth.php               # Layout for authentication pages (login, register)
-│   │   │   └── [other layout files]   # Main application layout templates
-│   │   │
-│   │   ├── apps/                      # App-related view files
-│   │   ├── auth/                      # Authentication views (login, register, password reset)
-│   │   ├── dashboard/                 # Dashboard views (statistics, reports, overview)
-│   │   ├── departments/               # Department management views
-│   │   ├── employees/                 # Employee list, profile, management pages
-│   │   ├── leave_management/          # Leave types, leave rules, leave limits configuration
-│   │   ├── errors/                    # Error pages (404, 500, etc.)
-│   │   └── user/                      # User profile, settings, preferences pages
+│   ├── Middleware/               # Request filters
+│   │   ├── AuthMiddleware.php    # Ensures user is logged in
+│   │   ├── GuestMiddleware.php   # Redirects if already logged in
+│   │   └── RoleMiddleware.php    # Checks user role (admin/user)
 │   │
-│   ├── Middleware/                    # Request/Response filters and validators
-│   │   ├── AuthMiddleware.php         # Verifies user authentication and authorization
-│   │   ├── UserMiddleware.php         # User-related middleware (role checks, permissions)
-│   │   ├── ErrorMiddleware.php        # Global error handling and logging
-│   │   ├── FlashMiddleware.php        # Flash message handling for notifications
-│   │   └── multer.js                  # File upload middleware (for frontend/Node integration)
+│   ├── Core/                      # Framework foundation
+│   │   ├── Router.php
+│   │   ├── Database.php
+│   │   ├── Session.php
+│   │   ├── ErrorHandler.php
+│   │   └── Csrf.php
 │   │
-│   ├── Core/                          # Core framework files - foundation classes
-│   │   ├── Router.php                 # URL routing and request dispatching
-│   │   └── Session.php                # Session management and storage
+│   ├── Utils/                      # Helpers
+│   │   ├── Validator.php
+│   │   └── Mailer.php
 │   │
-│   └── Utils/                         # Utility functions and helpers
-│       └── Validator.php              # Input validation rules and methods
+│   └── Views/                       # UI templates
+│       ├── layouts/
+│       │   ├── auth.php
+│       │   ├── admin.php
+│       │   └── partials/
+│       │       ├── _navbar.php
+│       │       └── _offcanvas.php
+│       ├── auth/                    # Login, register, password reset pages
+│       ├── dashboard/
+│       ├── employees/
+│       ├── leaves/
+│       ├── holidays/
+│       ├── departments/
+│       ├── leave_types/
+│       └── errors/                   # 404, 500 pages
 │
-├── config/                            # Configuration files
-│   ├── database.php                   # Database connection settings and credentials
-│   ├── constants.php                  # Application-wide constants and settings
-│   ├── database.sql                   # Database schema and initial data
-│   └── email.config.js                # Email configuration (SMTP, templates)
+├── config/                           # Configuration files
+│   ├── app.php
+│   ├── database.php
+│   └── constants.php
 │
-├── routes/                            # Application routing
-│   └── web.php                        # Web route definitions (maps URLs to controllers)
+├── routes/                           # Route definitions
+│   └── web.php
 │
-├── services/                          # Business logic services
-│   └── email.service.js               # Email sending service (notifications, confirmations)
+├── public/                            # Web root
+│   ├── index.php                      # Front controller
+│   ├── .htaccess                       # Apache routing
+│   ├── assets/                          # Compiled CSS, JS, images (Falcon template - included)
+│   └── vendors/                         # Third‑party frontend libraries (Falcon template - included)
 │
-├── Storage/                           # File storage and uploads
-│   └── Uploads.php                    # Handles file uploads and storage operations
+├── storage/                             # File storage
+│   ├── logs/                              # Application logs
+│   └── uploads/                           # User uploaded files
 │
-├── database/                          # Database related files
-│   └── [empty - reserved for migrations and backup]
+├── vendor/                                # Composer dependencies
 │
-├── public/                            # Web root - publicly accessible files
-│   ├── index.php                      # Application entry point
-│   ├── assets/                        # Static assets (CSS, JS, images)
-│   ├── fonts/                         # Font files and icon libraries
-│   └── vendors/                       # Third-party libraries and dependencies
-│
-├── simple/                            # Simple HTML templates (standalone pages)
-│   ├── confirm-mail.html              # Email confirmation page
-│   ├── forgot-password.html           # Password recovery form
-│   ├── lock-screen.html               # Screen lock/timeout page
-│   ├── login.html                     # Login form template
-│   ├── logout.html                    # Logout confirmation page
-│   ├── register.html                  # User registration form
-│   └── reset-password.html            # Password reset form
-│
-├── transfer/                          # Design transfer files (development/reference)
-│   └── Falcon Dashboard templates     # Template backups and design references
-│
-├── vendor/                            # Composer dependencies (auto-generated)
-│   ├── autoload.php                   # Composer autoloader
-│   └── composer/                      # Composer metadata
-│
-├── composer.json                      # PHP dependency manager configuration
-├── composer.lock                      # Locked dependency versions
-├── .env                               # Environment variables (local configuration)
-├── .env.example                       # Example environment file template
-├── .gitignore                         # Git ignore rules
-├── .git/                              # Git version control
-└── Readme.md                          # Project documentation (this file)
+├── .env                                   # Environment variables (not committed)
+├── .env.example                           # Example environment file
+├── composer.json                          # PHP dependencies
+├── .gitignore                             # Git ignore rules
+└── README.md                               # This file
 ```
 
 ---
 
-## Directory & File Descriptions
+## 🔐 Authentication & Role‑Based Access
 
-### `/app` - Main Application Logic
-Contains all core application code following MVC (Model-View-Controller) architecture pattern.
+The system implements a secure authentication module with:
 
-#### `/app/Controllers` - Request Handlers
-Controllers process incoming HTTP requests and coordinate between models and views:
-- **Controller.php** - Base controller with shared functionality for all controllers
-- **AuthController.php** - Handles user login, logout, session management, authentication
-- **AppController.php** - General application operations and common features
-- **ApiController.php** - REST API endpoints for AJAX/frontend requests
-- **DashboardController.php** - Generates dashboard data, statistics, and reports
-- **DepartmentController.php** - Department CRUD operations and management
-- **EmployeeController.php** - Employee records, profiles, and management operations
-- **LeaveController.php** - Leave request submission, approval, tracking, and management
-- **HolidaysController.php** - Holiday calendar configuration and management
+- **Registration** (optional) and **login**.
+- **Password reset** with secure tokens stored in `password_resets` table.
+- **Session regeneration** after login.
+- **CSRF protection** on all forms.
+- **Role‑based access**: `admin` (full access) and `user` (limited access). The `RoleMiddleware` can be applied to routes to restrict access.
 
-#### `/app/Models` - Database Access Layer
-Models handle database queries, data operations, and business logic:
-- **Model.php** - Base model class with common database methods (find, create, update, delete)
-- **User.php** - User/Admin authentication and profile data management
-- **Employee.php** - Employee records, information, and details
-- **Holiday.php** - Holiday definitions and leave type configurations
-
-#### `/app/Views` - UI Templates
-HTML/PHP template files for rendering pages and user interfaces:
-- **layouts/** - Page layout templates (headers, footers, navigation)
-  - *auth.php* - Authentication page layout for login/register pages
-- **apps/** - App-related view files
-- **auth/** - Login, registration, password recovery pages
-- **dashboard/** - Dashboard statistics, overview, and reporting pages
-- **departments/** - Department listing and management interfaces
-- **employees/** - Employee list, profiles, management, and details pages
-- **leave_management/** - Leave type setup, rules, limits, and policy configuration
-- **errors/** - Error pages (404, 500, access denied, maintenance, etc.)
-- **user/** - User profile, settings, preferences, and account pages
-
-#### `/app/Middleware` - Request Filters
-Middleware processes requests before they reach controllers:
-- **AuthMiddleware.php** - Verifies user authentication status and redirects unauthenticated users
-- **UserMiddleware.php** - Validates user roles and permissions for protected actions
-- **ErrorMiddleware.php** - Global error handling, logging, and error page display
-- **FlashMiddleware.php** - Manages flash messages for notifications, alerts, and feedback
-- **multer.js** - File upload middleware for frontend/Node.js integration
-
-#### `/app/Core` - Framework Foundation
-Core framework classes providing base functionality:
-- **Router.php** - URL routing engine, request dispatching to appropriate controllers and actions
-- **Session.php** - Session initialization, management, user state storage and retrieval
-
-#### `/app/Utils` - Helper Functions
-Utility functions and helper classes for common operations:
-- **Validator.php** - Input validation rules, data sanitization, and error message generation
-
-### `/config` - Configuration Files
-Application settings, environment configuration, and database schemas:
-- **database.php** - Database connection credentials, host, username, password, settings
-- **constants.php** - Application-wide constants (app name, version, settings, etc.)
-- **database.sql** - Database schema, table definitions, and initial seed data
-- **email.config.js** - Email service configuration (SMTP server, sender details, templates)
-
-### `/routes` - Application Routes
-URL routing configuration files:
-- **web.php** - Defines all URL routes and maps them to appropriate controllers/actions
-
-### `/services` - Business Logic Services
-Reusable services for common operations across the application:
-- **email.service.js** - Email sending service for notifications, confirmations, and alerts
-
-### `/Storage` - File Management
-File storage and upload handling:
-- **Uploads.php** - Handles user file uploads, storage operations, and file management
-
-### `/database` - Database Files
-Database migration and backup directory:
-- Empty by default, reserved for database migrations, backups, and schema updates
-
-### `/simple` - Standalone HTML Templates
-Simple, standalone HTML pages not integrated into main application:
-- **confirm-mail.html** - Email confirmation page template
-- **forgot-password.html** - Password recovery/reset form template
-- **lock-screen.html** - Screen lock or session timeout page
-- **login.html** - Standalone login form template
-- **logout.html** - Logout confirmation page
-- **register.html** - User registration form template
-- **reset-password.html** - Password reset form template
-
-### `/transfer` - Design/Template Files
-Development/reference files for UI templates and design assets:
-- Contains Falcon Dashboard template backups and design references for UI consistency
-
-### `/vendor` - Dependencies
-Auto-generated Composer dependency directory (do not edit manually):
-- **autoload.php** - Composer's PSR-4 autoloader for automatic class loading
-- **composer/** - Composer metadata and installed package information
-
-### Root Configuration Files
-- **composer.json** - PHP dependency specifications and project metadata
-- **composer.lock** - Locked versions of all dependencies for consistency across environments
-- **.env** - Environment variables for local configuration (sensitive data, API keys)
-- **.env.example** - Template showing required environment variables
-- **.gitignore** - Specifies files/folders to exclude from git version control
-- **.git/** - Git version control repository and history
-- **Readme.md** - Project documentation (this file)
+Default users (all passwords are `password`):
+- **Admin**: `admin@example.com` (full system access)
+- **User**: `user@example.com` (limited access)
 
 ---
 
-## Key Features
-✓ Employee leave request management and tracking
-✓ Holiday calendar management
-✓ Department administration and organization
-✓ Leave approval workflow
-✓ Responsive dashboard with statistics
-✓ User authentication and authorization
-✓ Email notifications and alerts
-✓ Data export capabilities
-✓ Role-based access control
-✓ Employee performance tracking
+## ⚙️ Core Components
 
-## Setup Instructions
-
-1. **Install Dependencies**
-   ```bash
-   composer install
-   ```
-
-2. **Configure Environment**
-   - Copy `.env.example` to `.env`
-   - Update database credentials and settings
-
-3. **Database Setup**
-   - Import `config/database.sql` into your MySQL/MariaDB database
-   - Update connection settings in `config/database.php`
-   - Test database connection
-
-4. **Run Application**
-   - Place project in web root (XAMPP htdocs)
-   - Access via `http://localhost/STATE-DEPARTMENT-FOR-ENERGY-LEAVE-MANAGEMENT-PHP/public`
-   - Login with default credentials (check database.sql)
+| Component       | Responsibility |
+|-----------------|----------------|
+| **Router**      | Maps URLs to controllers, runs middleware, dispatches requests. |
+| **Database**    | Singleton PDO connection with prepared statements. |
+| **Session**     | Wrapper for `$_SESSION` with flash messaging. |
+| **ErrorHandler**| Converts errors to exceptions, logs them, displays friendly 404/500 pages. |
+| **Csrf**        | Generates and validates CSRF tokens. |
+| **Validator**   | Validates input data against rules (required, email, min, confirmed, etc.). |
+| **Mailer**      | Dummy email logger (replace with PHPMailer for production). |
 
 ---
 
-## Technologies Used
-- **Backend**: PHP 7.4+
-- **Frontend**: HTML5, CSS3, JavaScript ES6+, Bootstrap 5
-- **Database**: MySQL 5.7+ or MariaDB
-- **Libraries**: DataTables, Chart.js, Select2, Day.js, ECharts, FontAwesome, Feather Icons
-- **Package Manager**: Composer
-- **Version Control**: Git
+## 🗄️ Database Schema
+
+The database is named `leave_management`. Key tables:
+
+- `users` – stores user credentials and roles (`admin`, `user`).
+- `password_resets` – stores password reset tokens with expiry.
+- `employees` – employee details linked to `users` and `departments`.
+- `departments` – department list.
+- `leave_types` – leave categories (Annual, Sick, etc.).
+- `leaves` – leave records linked to employees and leave types.
+- `holidays` – public holidays.
+
+**Sample SQL Schema:**
+```sql
+-- Create database
+CREATE DATABASE IF NOT EXISTS `leave_management`;
+USE `leave_management`;
+
+-- Users table
+CREATE TABLE `users` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `email` VARCHAR(255) UNIQUE NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `role` ENUM('admin', 'user') DEFAULT 'user',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Password resets table
+CREATE TABLE `password_resets` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `email` VARCHAR(255) NOT NULL,
+    `token` VARCHAR(255) NOT NULL,
+    `expires_at` TIMESTAMP NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Departments table
+CREATE TABLE `departments` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `description` TEXT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Employees table
+CREATE TABLE `employees` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `department_id` INT,
+    `employee_id` VARCHAR(50) UNIQUE,
+    `phone` VARCHAR(20),
+    `address` TEXT,
+    `hire_date` DATE,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`department_id`) REFERENCES `departments`(`id`) ON DELETE SET NULL
+);
+
+-- Leave types table
+CREATE TABLE `leave_types` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `description` TEXT,
+    `days_allowed` INT DEFAULT 0,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Leaves table
+CREATE TABLE `leaves` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `employee_id` INT NOT NULL,
+    `leave_type_id` INT NOT NULL,
+    `start_date` DATE NOT NULL,
+    `end_date` DATE NOT NULL,
+    `days_requested` INT NOT NULL,
+    `reason` TEXT,
+    `status` ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    `approved_by` INT,
+    `approved_at` TIMESTAMP NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`employee_id`) REFERENCES `employees`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`leave_type_id`) REFERENCES `leave_types`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`approved_by`) REFERENCES `users`(`id`) ON DELETE SET NULL
+);
+
+-- Holidays table
+CREATE TABLE `holidays` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `date` DATE NOT NULL,
+    `description` TEXT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert sample data
+INSERT INTO `users` (`name`, `email`, `password`, `role`) VALUES
+('Admin User', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'),
+('Regular User', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
+
+INSERT INTO `departments` (`name`, `description`) VALUES
+('IT Department', 'Information Technology'),
+('HR Department', 'Human Resources'),
+('Finance Department', 'Financial Operations');
+
+INSERT INTO `leave_types` (`name`, `description`, `days_allowed`) VALUES
+('Annual Leave', 'Regular annual vacation', 25),
+('Sick Leave', 'Medical leave', 10),
+('Personal Leave', 'Personal matters', 5);
+```
+
+A complete SQL schema is provided in `config/database.sql`. Initial data includes sample users, departments, leave types, and test records.
 
 ---
 
-## Development Notes
+## 🚀 Quick Start
 
-### Code Structure
-- Follows MVC (Model-View-Controller) architectural pattern
-- Models handle data access and business logic
-- Controllers manage request routing and application flow
-- Views present data to users through HTML templates
+### 1. Install Dependencies
+Make sure you have [Composer](https://getcomposer.org/) installed, then run:
+```bash
+composer install
+```
 
-### Database
-- Primary database: MySQL/MariaDB
-- Schema defined in `config/database.sql`
-- Models handle all database interactions via prepared statements
+### 2. Configure Environment
+Copy `.env.example` to `.env` and update the database credentials:
 
-### Security
-- Authentication middleware protects routes
-- Input validation through Validator utility
-- CSRF protection on forms
-- User roles and permissions enforced
+**Sample `.env` content:**
+```ini
+DB_HOST=localhost
+DB_NAME=leave_management
+DB_USER=root
+DB_PASS=your_password_here
+SESSION_SECRET=your_random_secret_key_here
+EMAIL_HOST=smtp.gmail.com
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+```
+
+### 3. Create Database
+Import the SQL schema (located in `database/schema.sql`) into your MySQL server.
+
+### 4. Serve the Application
+From the project root, run:
+```bash
+php -S localhost:8000 -t public
+```
+Then open `http://localhost:8000` in your browser.
 
 ---
 
-## Support & Maintenance
-For issues or enhancements, refer to the controllers, models, and views that handle specific functionality. Configuration settings are centralized in the `/config` directory for easy management.
+## 🧪 Testing the Authentication
 
+- Visit `/login` and log in with `admin@example.com` / `password` or `user@example.com` / `password`.
+- After login you will be redirected to the dashboard.
+- Use the lock screen (`/lock-screen`) to re‑authenticate.
+- Test the password reset flow via `/forgot-password` (emails are logged in `storage/logs/email.log`).
 
-## to start the project simply 
-C:\xampp\htdocs\dashboard\PHP VERSION\STATE-DEPARTMENT-FOR-ENERGY-LEAVE-MANAGEMENT-PHP>php -S localhost:8000 -t public
+---
+
+## 🛡️ Security Features
+
+- **Password hashing** with `password_hash()` (bcrypt).
+- **CSRF tokens** on all POST forms.
+- **Session fixation protection** – session ID regenerated after login.
+- **Prepared statements** – prevents SQL injection.
+- **Role‑based middleware** – restricts access to admin pages.
+- **Error handling** – no stack traces or sensitive info leaked in production.
+- **Logging** – all errors and important events are logged.
+
+---
+
+## 🧩 Extending the System
+
+To add new features (e.g., leave approval workflow, reports):
+
+1. Create the necessary database table(s).
+2. Build a **Model** for the new entity.
+3. Create a **Service** class containing business logic.
+4. Create a **Controller** to handle HTTP requests.
+5. Add **Views** for the UI.
+6. Define **routes** in `routes/web.php` and apply middleware as needed.
+7. Update the navigation partial (`_navbar.php`) to include links.
+
+All controllers should extend `App\Controllers\Controller`, and services should be instantiated in the controller's constructor or method.
+
+---
+
+## 📦 Dependencies
+
+- **PHP** 7.4 or higher
+- **MySQL** 5.7 or MariaDB
+- **Composer**
+- **PHPMailer** (optional, for real email sending)
+- **vlucas/phpdotenv** (for environment variables)
+- **Falcon Bootstrap Template** (frontend assets included in `public/assets/` and `public/vendors/`)
+
+---
+
+## 🤝 Contributing
+
+Feel free to extend the system. If you find bugs or have feature requests, please open an issue or submit a pull request.
+
+---
+
+## 📄 License
+
+This project is open‑source and available under the MIT License.
+
+---
+
+**Happy coding!** Build a robust leave management solution on this solid foundation.
 
 
