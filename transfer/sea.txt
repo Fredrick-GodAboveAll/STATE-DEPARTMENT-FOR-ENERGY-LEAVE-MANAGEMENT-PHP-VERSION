@@ -1,0 +1,8 @@
+
+
+
+<h1>Welcome, <?= htmlspecialchars($user['name']) ?>!</h1>
+<p>This is your dashboard. You are logged in.</p>
+<p>Email: <?= htmlspecialchars($user['email']) ?></p>
+
+
