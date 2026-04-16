@@ -2,7 +2,10 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Core\Router;
+use App\Core\Session;
 use App\Controllers\ErrorController;
+
+Session::start();
 
 // Error reporting (disable in production)
 ini_set('display_errors', 1);

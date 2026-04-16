@@ -1,70 +1,39 @@
-        
-        
-        <div class="row flex-center min-vh-100 py-6">
-          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4"><a class="d-flex flex-center mb-4" href="../../../index.html"><img class="me-2" src="../../../assets/img/icons/spot-illustrations/falcon.png" alt="" width="58" /><span class="font-sans-serif text-primary fw-bolder fs-4 d-inline-block">falcon</span></a>
-            <div class="card">
-              <div class="card-body p-4 p-sm-5">
-                <div class="row flex-between-center mb-2">
-                  <div class="col-auto">
-                    <h5>Register</h5>
-                  </div>
-                  <div class="col-auto fs-10 text-600"><span class="mb-0 undefined">Have an account?</span> <span><a href="/login">Login</a></span></div>
-                </div>
-
-
-
-                <form class="needs-validation" novalidate="">
-                  <div class="row gx-2">
-                    <div class="mb-3 col-sm-6">
-                      <input class="form-control" type="text" autocomplete="on" id="validationCustom01" placeholder="First Name" required />
-                      <div class="invalid-feedback">Please choose a username.</div>
-                    </div>
-                    <div class="mb-3 col-sm-6">
-                      <input class="form-control" type="text" autocomplete="on" id="validationCustomUsername" placeholder="Last Name" required />
-                      <div class="invalid-feedback">Please choose a username.</div>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <input class="form-control" type="email" autocomplete="on" id="validationCustom02" placeholder="Email address" required />
-                    <div class="invalid-feedback">Please choose a username.</div>
-                  </div>
-                  
-                  <div class="row gx-2">
-                    <div class="mb-3 col-sm-6">
-                      <input class="form-control" type="password" autocomplete="on" id="validationCustom03" placeholder="Password" required />
-                      <div class="invalid-feedback">Please choose a username.</div>
-                    </div>
-                    <div class="mb-3 col-sm-6">
-                      <input class="form-control" type="password" autocomplete="on" id="validationCustom04" placeholder="Confirm Password" required />
-                      <div class="invalid-feedback">Please choose a username.</div>
-                    </div>
-                  </div>
-
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="invalidCheck" required/>
-                    
-                    <label class="form-label" for="basic-register-checkbox">I accept the 
-                      <a href="#!">terms </a>and <a class="white-space-nowrap" href="#!">privacy policy</a>
-                    </label>
-                    <div class="invalid-feedback">Please choose a username</div>
-                  </div>
-
-                  <div class="mb-3">
-                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
-                  </div>
-                
-                </form>
-
-                <div class="position-relative mt-4">
-                  <hr />
-                  <div class="divider-content-center">or register with</div>
-                </div>
-                <div class="row g-2 mt-2">
-                  <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
-                  <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="row flex-center min-vh-100 py-6">
+ <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+ <div class="card"><div class="card-body p-4 p-sm-5">
+ <h5 class="mb-0">Register</h5><small>Create your account</small>
+ <?php if ($error = \App\Core\Session::flash('error')): ?>
+ <div class="alert alert-danger mt-3"><?= $error ?></div>
+ <?php endif; ?>
+ <?php if ($errors = \App\Core\Session::flash('errors')): ?>
+ <div class="alert alert-danger"><ul class="mb-0">
+ <?php foreach ($errors as $field => $msgs): ?>
+ <?php foreach ($msgs as $msg): ?><li><?= $msg ?></li><?php endforeach; ?>
+ <?php endforeach; ?>
+ </ul></div>
+ <?php endif; ?>
+ <!-- Registration form: `password_confirm` must exactly match `password` -->
+ <form method="POST" action="/register" class="mt-3">
+ <input type="hidden" name="csrf_token" value="<?= \App\Core\Csrf::generate(); ?>">
+ <div class="mb-3">
+ <input class="form-control" type="text" name="name" placeholder="Full name"
+ value="<?= htmlspecialchars(\App\Core\Session::flash('old')['name'] ?? '') ?>" required>
+ </div>
+ <div class="mb-3">
+ <input class="form-control" type="email" name="email" placeholder="Email address"
+ value="<?= htmlspecialchars(\App\Core\Session::flash('old')['email'] ?? '') ?>" required>
+ </div>
+ <div class="mb-3">
+ <input class="form-control" type="password" name="password" placeholder="Password" required>
+ </div>
+ <div class="mb-3">
+ <input class="form-control" type="password" name="password_confirm" placeholder="Confirm password" required>
+ </div>
+ <div class="mb-3">
+ <button class="btn btn-primary d-block w-100" type="submit">Register</button>
+ </div>
+ </form>
+ <a class="fs-10" href="/login">Already have an account? Log in</a>
+ </div></div>
+ </div>
+</div>

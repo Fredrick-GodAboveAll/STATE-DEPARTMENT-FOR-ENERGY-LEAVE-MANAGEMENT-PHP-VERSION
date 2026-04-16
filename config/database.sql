@@ -1,17 +1,36 @@
+CREATE DATABASE IF NOT EXISTS `leave_management`
+CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `leave_management`;
 
--- THE FIRST TEST DB 
-
-CREATE DATABASE IF NOT EXISTS `leave_start`;
-USE `your_database`;
-
+-- Users table
 CREATE TABLE `users` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `email` VARCHAR(255) UNIQUE NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+ `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+ `name` VARCHAR(100) NOT NULL,
+ `email` VARCHAR(100) NOT NULL UNIQUE,
+ `password` VARCHAR(255) NOT NULL,
+ `role` ENUM('admin','user') NOT NULL DEFAULT 'user',
+ `last_login` TIMESTAMP NULL,
+ `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ INDEX `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Insert a sample user (password = password123)
-INSERT INTO `users` (`name`, `email`, `password`) VALUES
-('Admin User', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+-- Password resets table
+CREATE TABLE `password_resets` (
+ `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+ `email` VARCHAR(100) NOT NULL,
+ `token` VARCHAR(64) NOT NULL,
+ `expires_at` TIMESTAMP NOT NULL,
+ `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ INDEX `idx_email` (`email`),
+ INDEX `idx_token` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default users (password = 'password')
+INSERT INTO `users` (`name`, `email`, `password`, `role`) VALUES
+('Admin User', 'admin@example.com',
+ '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'),
+('Regular User', 'user@example.com',
+ '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');

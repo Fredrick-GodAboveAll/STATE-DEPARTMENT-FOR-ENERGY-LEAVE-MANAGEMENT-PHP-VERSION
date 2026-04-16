@@ -1,14 +1,39 @@
 <?php
-namespace App\Controllers;
-
-class AuthController extends Controller
+namespace App\Models;
+use PDO;
+class User extends Model
 {
-    public function login()
-    {
-        // Set the content to be injected into the layout
-        $content = '../app/Views/auth/login.php';
-        
-        // Include the layout (which will include the content)
-        include '../app/Views/layouts/auth.php';
-    }
+ protected $table = 'users';
+ public function findByEmail($email)
+ {
+ $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE email = ?");
+ $stmt->execute([$email]);
+ return $stmt->fetch(PDO::FETCH_OBJ);
+ }
+ public function create($data)
+ {
+ $sql = "INSERT INTO {$this->table} (name, email, password, role)
+ VALUES (:name, :email, :password, :role)";
+ $stmt = $this->db->prepare($sql);
+ return $stmt->execute([
+ 'name' => $data['name'],
+ 'email' => $data['email'],
+ 'password' => $data['password'],
+ 'role' => $data['role'] ?? 'user'
+ ]);
+ }
+ public function updateLastLogin($id)
+ {
+ $stmt = $this->db->prepare(
+ "UPDATE {$this->table} SET last_login = NOW() WHERE id = ?"
+ );
+ return $stmt->execute([$id]);
+ }
+ public function updatePassword($email, $newPassword)
+ {
+ $stmt = $this->db->prepare(
+ "UPDATE {$this->table} SET password = ? WHERE email = ?"
+ );
+ return $stmt->execute([$newPassword, $email]);
+ }
 }

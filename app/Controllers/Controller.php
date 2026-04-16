@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
-
 class Controller
 {
-    // Common methods can be added here later
+ // Base controller (can add common methods later)
 }

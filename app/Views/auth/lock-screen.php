@@ -1,23 +1,20 @@
-  <div class="row flex-center min-vh-100 py-6 text-center">
-          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4"><a class="d-flex flex-center mb-4" href="../../../index.html"><img class="me-2" src="../../../assets/img/icons/spot-illustrations/falcon.png" alt="" width="58" /><span class="font-sans-serif text-primary fw-bolder fs-4 d-inline-block">falcon</span></a>
-            <div class="card">
-              <div class="card-body p-4 p-sm-5">
-                <div class="avatar avatar-4xl">
-                  <img class="rounded-circle" src="../../../assets/img/team/1.jpg" alt="" />
-                </div>
-                <h5 class="mt-3 mb-0">Hi! Emma Watson</h5>
-                <p class="mb-0">Enter your password to access the admin.</p>
-                <form class="mt-4 row g-0 mx-sm-4">
-                  <div class="col"><input class="form-control me-2 mb-2" type="password" placeholder="Enter your password" aria-label="User's password" aria-describedby="user-password" /></div>
-                  <div class="col-auto ps-2"><button class="btn btn-primary px-3 mb-2" id="user-password" type="button">Login</button></div>
-                </form>
-
-                
-                <div class="mt-3 text-center">
-                  <a href="/login" class="fs-10">(test login from here page)</a>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="row flex-center min-vh-100 py-6">
+ <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+ <div class="card"><div class="card-body p-4 p-sm-5 text-center">
+ <img class="img-thumbnail rounded-circle mb-3" src="https://via.placeholder.com/80" alt="" width="80" />
+ <h5 class="mb-2"><?= \App\Core\Session::get('user_name') ?></h5>
+ <p class="fs-10 mb-3">Enter your password to unlock</p>
+ <?php if ($error = \App\Core\Session::flash('error')): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
+ <form method="POST" action="/unlock">
+ <input type="hidden" name="csrf_token" value="<?= \App\Core\Csrf::generate(); ?>">
+ <div class="mb-3">
+ <input class="form-control" type="password" name="password" placeholder="Password" required>
+ </div>
+ <div class="mb-3">
+ <button class="btn btn-primary d-block w-100" type="submit">Unlock</button>
+ </div>
+ </form>
+ <a class="fs-10" href="/logout">Sign in as a different user</a>
+ </div></div>
+ </div>
+</div>
