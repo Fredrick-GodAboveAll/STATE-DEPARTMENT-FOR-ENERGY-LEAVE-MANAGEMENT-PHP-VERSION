@@ -30,10 +30,15 @@ class AuthController extends Controller
  Session::flash('old', $_POST);
  header('Location: /login'); exit;
  }
- if ($this->authService->attempt($_POST['email'], $_POST['password'])) {
+ $result = $this->authService->attempt($_POST['email'], $_POST['password']);
+ 
+ if ($result === true) {
  header('Location: /dashboard'); exit;
+ } elseif ($result === 'unverified_email') {
+ Session::flash('error', 'Please verify your email address before logging in. Check your email for verification link.');
+ header('Location: /login'); exit;
  } else {
- Session::flash('error', 'Invalid email or password');
+ Session::flash('error', 'Invalid email or password. Your account may be locked after too many failed attempts.');
  header('Location: /login'); exit;
  }
  }
@@ -51,7 +56,7 @@ class AuthController extends Controller
  $rules = [
  'name' => 'required',
  'email' => 'required|email',
- 'password' => 'required|min:6|confirmed',
+ 'password' => 'required|min:8|confirmed',
  'password_confirm' => 'required'
  ];
  if (!$validator->validate($_POST, $rules)) {
@@ -62,7 +67,7 @@ class AuthController extends Controller
  $data = ['name' => $_POST['name'], 'email' => $_POST['email'],
  'password' => $_POST['password']];
  if ($this->authService->register($data)) {
- Session::flash('success', 'Registration successful. Please login.');
+ Session::flash('success', 'Registration successful. Please check your email to verify your account.');
  header('Location: /login'); exit;
  } else {
  Session::flash('error', 'Email already exists.');
@@ -105,33 +110,39 @@ class AuthController extends Controller
  $token = $_GET['token'] ?? '';
  if (!$token) { header('Location: /forgot-password'); exit; }
  if (!$this->authService->validateResetToken($token)) {
- Session::flash('error', 'Invalid or expired reset token.');
- header('Location: /forgot-password'); exit;
+     Session::flash('error', 'Invalid or expired reset token.');
+     header('Location: /forgot-password'); exit;
  }
  $title = 'Reset Password';
  $content = '../app/Views/auth/reset-password.php';
  include '../app/Views/layouts/auth.php';
  }
+ 
  public function doResetPassword()
  {
  Csrf::validate($_POST['csrf_token'] ?? '');
  $token = $_POST['token'] ?? '';
- $password = $_POST['password'] ?? '';
- if (!$token) { header('Location: /forgot-password'); exit; }
+ if (!$token) {
+     Session::flash('error', 'Invalid request. Missing reset token.');
+     header('Location: /forgot-password'); exit;
+ }
+ 
  $validator = new Validator();
  if (!$validator->validate($_POST, [
- 'password' => 'required|min:6|confirmed',
- 'password_confirm' => 'required'
+     'password' => 'required|min:8|confirmed',
+     'password_confirm' => 'required'
  ])) {
- Session::flash('errors', $validator->errors());
- header("Location: /reset-password?token=$token"); exit;
+     Session::flash('errors', $validator->errors());
+     header('Location: /reset-password?token=' . urlencode($token)); exit;
  }
+ 
+ $password = $_POST['password'];
  if ($this->authService->resetPassword($token, $password)) {
- Session::flash('success', 'Password reset successful. Please login.');
- header('Location: /login'); exit;
+     Session::flash('success', 'Password reset successful. Please login with your new password.');
+     header('Location: /login'); exit;
  } else {
- Session::flash('error', 'Invalid or expired reset token.');
- header('Location: /forgot-password'); exit;
+     Session::flash('error', 'Invalid or expired reset token. Please request a new password reset.');
+     header('Location: /forgot-password'); exit;
  }
  }
  public function logout()
@@ -151,6 +162,23 @@ class AuthController extends Controller
  $title = 'Lock Screen';
  $content = '../app/Views/auth/lock-screen.php';
  include '../app/Views/layouts/auth.php';
+ }
+ 
+ public function verifyEmail()
+ {
+ $token = $_GET['token'] ?? '';
+ if (!$token) {
+ Session::flash('error', 'Invalid verification link.');
+ header('Location: /login'); exit;
+ }
+ 
+ if ($this->authService->verifyEmail($token)) {
+ Session::flash('success', 'Email verified successfully. You can now login.');
+ header('Location: /login'); exit;
+ } else {
+ Session::flash('error', 'Invalid or expired verification token.');
+ header('Location: /login'); exit;
+ }
  }
  public function doUnlock()
  {

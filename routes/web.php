@@ -13,6 +13,7 @@ $router->post('/forgot-password', 'AuthController@doForgotPassword', [GuestMiddl
 $router->get('/reset-password', 'AuthController@resetPassword', [GuestMiddleware::class]);
 $router->post('/reset-password', 'AuthController@doResetPassword', [GuestMiddleware::class]);
 $router->get('/confirm-mail', 'AuthController@confirmMail', [GuestMiddleware::class]);
+$router->get('/verify-email', 'AuthController@verifyEmail', [GuestMiddleware::class]);
 // Protected routes
 $router->get('/logout', 'AuthController@logout');
 $router->post('/logout', 'AuthController@logout');
