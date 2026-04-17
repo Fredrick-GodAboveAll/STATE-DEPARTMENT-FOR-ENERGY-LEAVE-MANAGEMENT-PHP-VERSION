@@ -14,6 +14,7 @@ $router->get('/reset-password', 'AuthController@resetPassword', [GuestMiddleware
 $router->post('/reset-password', 'AuthController@doResetPassword', [GuestMiddleware::class]);
 $router->get('/confirm-mail', 'AuthController@confirmMail', [GuestMiddleware::class]);
 $router->get('/verify-email', 'AuthController@verifyEmail', [GuestMiddleware::class]);
+$router->get('/offline', 'AuthController@offline');
 // Protected routes
 $router->get('/logout', 'AuthController@logout');
 $router->post('/logout', 'AuthController@logout');

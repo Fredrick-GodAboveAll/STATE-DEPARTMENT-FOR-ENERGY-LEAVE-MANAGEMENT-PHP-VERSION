@@ -71,6 +71,7 @@ class AuthService
  
  // Send email verification link after registration
  if ($result) {
+     // This will throw OfflineException if email fails
      $this->sendVerificationEmail($data['email']);
  }
  return $result;
@@ -89,9 +90,9 @@ class AuthService
  $token = bin2hex(random_bytes(32));
 
  if ($this->passwordResetModel->createToken($email, $token, null)) {
-     if ($this->sendPasswordResetEmail($email, $token)) {
-         return $token;
-     }
+     // This will throw OfflineException if email fails
+     $this->sendPasswordResetEmail($email, $token);
+     return $token;
  }
  return false;
  }

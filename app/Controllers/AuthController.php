@@ -4,6 +4,7 @@ use App\Services\AuthService;
 use App\Utils\Validator;
 use App\Core\Csrf;
 use App\Core\Session;
+use App\Core\OfflineDetector;
 use App\Models\User;
 class AuthController extends Controller
 {
@@ -44,12 +45,22 @@ class AuthController extends Controller
  }
  public function register()
  {
+ // Registration requires email verification, so check if system is online
+ if (OfflineDetector::isOffline()) {
+ Session::flash('offline_feature', 'Registration');
+ header('Location: /offline'); exit;
+ }
  $title = 'Register';
  $content = '../app/Views/auth/register.php';
  include '../app/Views/layouts/auth.php';
  }
  public function doRegister()
  {
+ // Check if system is offline before allowing registration
+ if (OfflineDetector::isOffline()) {
+ Session::flash('error', 'Registration is not available offline. Please connect to the internet.');
+ header('Location: /register'); exit;
+ }
  // Ensure the registration request is secure before validation.
  Csrf::validate($_POST['csrf_token'] ?? '');
  $validator = new Validator();
@@ -76,12 +87,22 @@ class AuthController extends Controller
  }
  public function forgotPassword()
  {
+ // Password reset requires email capability, so check if system is online
+ if (OfflineDetector::isOffline()) {
+ Session::flash('offline_feature', 'Password Reset');
+ header('Location: /offline'); exit;
+ }
  $title = 'Forgot Password';
  $content = '../app/Views/auth/forgot-password.php';
  include '../app/Views/layouts/auth.php';
  }
  public function doForgotPassword()
  {
+ // Check if system is offline before allowing password reset
+ if (OfflineDetector::isOffline()) {
+ Session::flash('error', 'Password reset is not available offline. Please connect to the internet.');
+ header('Location: /forgot-password'); exit;
+ }
  // Protect the forgot-password form from CSRF attacks.
  Csrf::validate($_POST['csrf_token'] ?? '');
  $validator = new Validator();
@@ -106,6 +127,11 @@ class AuthController extends Controller
  }
  public function resetPassword()
  {
+ // Check if system is offline before showing reset form
+ if (OfflineDetector::isOffline()) {
+ Session::flash('offline_feature', 'Password Reset');
+ header('Location: /offline'); exit;
+ }
  // The reset link contains a token in the query string. We validate it before showing the form.
  $token = $_GET['token'] ?? '';
  if (!$token) { header('Location: /forgot-password'); exit; }
@@ -120,6 +146,11 @@ class AuthController extends Controller
  
  public function doResetPassword()
  {
+ // Check if system is offline before allowing password reset
+ if (OfflineDetector::isOffline()) {
+ Session::flash('error', 'Password reset is not available offline. Please connect to the internet.');
+ header('Location: /forgot-password'); exit;
+ }
  Csrf::validate($_POST['csrf_token'] ?? '');
  $token = $_POST['token'] ?? '';
  if (!$token) {
@@ -166,6 +197,11 @@ class AuthController extends Controller
  
  public function verifyEmail()
  {
+ // Check if system is offline before allowing email verification
+ if (OfflineDetector::isOffline()) {
+ Session::flash('error', 'Email verification is not available offline. Please connect to the internet.');
+ header('Location: /login'); exit;
+ }
  $token = $_GET['token'] ?? '';
  if (!$token) {
  Session::flash('error', 'Invalid verification link.');
@@ -193,5 +229,12 @@ class AuthController extends Controller
  Session::flash('error', 'Incorrect password.');
  header('Location: /lock-screen'); exit;
  }
+ }
+
+ public function offline()
+ {
+ $title = 'You Are Offline';
+ $content = '../app/Views/auth/offline.php';
+ include '../app/Views/layouts/auth.php';
  }
 }
