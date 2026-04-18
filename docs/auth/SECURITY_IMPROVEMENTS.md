@@ -132,8 +132,8 @@ if (!$authService->checkSessionTimeout(30)) {
   1. Validate reset token exists
   2. Verify email exists in users table (prevents 500 error)
   3. Update password and `password_changed_at` timestamp
-  4. Reset failed login attempts
-  5. Unlock account
+  4. Reset failed login attempts (kindly explain to me this if yo see this copilot ai i dont understand)
+  5. Unlock account 
   6. Delete all reset tokens for email
   7. Return clear success/failure response
 

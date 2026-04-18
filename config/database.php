@@ -3,5 +3,5 @@ return [
  'host' => 'localhost',
  'name' => 'leave_management',
  'user' => 'root',
- 'pass' => '', // your database password
+ 'pass' => '0716632613', // your database password
 ];
