@@ -58,7 +58,7 @@ class AuthController extends Controller
  {
  // Check if system is offline before allowing registration
  if (OfflineDetector::isOffline()) {
- Session::flash('error', 'Registration is not available offline. Please connect to the internet.');
+ Session::flash('error', 'Email verification not sent due to being offline. Please connect to the internet.');
  header('Location: /register'); exit;
  }
  // Ensure the registration request is secure before validation.
@@ -115,7 +115,7 @@ class AuthController extends Controller
  Session::flash('reset_email', $_POST['email']);
  header('Location: /confirm-mail'); exit;
  } else {
- Session::flash('error', 'Unable to send reset email. Please try again.');
+ Session::flash('error', 'Unable to send reset email. Please check your email address and SMTP settings.');
  header('Location: /forgot-password'); exit;
  }
  }
@@ -151,7 +151,12 @@ class AuthController extends Controller
  Session::flash('error', 'Password reset is not available offline. Please connect to the internet.');
  header('Location: /forgot-password'); exit;
  }
+ try {
  Csrf::validate($_POST['csrf_token'] ?? '');
+ } catch (\Exception $e) {
+ Session::flash('error', 'Invalid request. Please try again.');
+ header('Location: /reset-password?token=' . urlencode($_POST['token'] ?? '')); exit;
+ }
  $token = $_POST['token'] ?? '';
  if (!$token) {
      Session::flash('error', 'Invalid request. Missing reset token.');
@@ -168,12 +173,18 @@ class AuthController extends Controller
  }
  
  $password = $_POST['password'];
+ try {
  if ($this->authService->resetPassword($token, $password)) {
      Session::flash('success', 'Password reset successful. Please login with your new password.');
      header('Location: /login'); exit;
  } else {
      Session::flash('error', 'Invalid or expired reset token. Please request a new password reset.');
      header('Location: /forgot-password'); exit;
+ }
+ } catch (\Exception $e) {
+     error_log('Password reset error: ' . $e->getMessage());
+     Session::flash('error', 'An error occurred while resetting your password. Please try again.');
+     header('Location: /reset-password?token=' . urlencode($token)); exit;
  }
  }
  public function logout()

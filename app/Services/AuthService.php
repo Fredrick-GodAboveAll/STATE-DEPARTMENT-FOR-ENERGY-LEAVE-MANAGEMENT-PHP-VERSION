@@ -90,9 +90,12 @@ class AuthService
  $token = bin2hex(random_bytes(32));
 
  if ($this->passwordResetModel->createToken($email, $token, null)) {
-     // This will throw OfflineException if email fails
-     $this->sendPasswordResetEmail($email, $token);
-     return $token;
+     // Only consider the reset request successful if the email actually sends.
+     // If sending fails, remove the token so the user is not given a false success flow.
+     if ($this->sendPasswordResetEmail($email, $token)) {
+         return $token;
+     }
+     $this->passwordResetModel->deleteByEmail($email);
  }
  return false;
  }
@@ -102,14 +105,15 @@ class AuthService
      $appUrl = $this->getEnv('APP_URL', 'http://localhost:8000');
      $resetLink = rtrim($appUrl, '/') . '/reset-password?token=' . urlencode($token);
      $subject = 'Password Reset Request';
-     $message = "Click the link below to reset your password:\r\n\r\n<{$resetLink}>";
-     $headers = "From: noreply@yourdomain.com\r\n";
-     $headers .= "Reply-To: noreply@yourdomain.com\r\n";
+     $message = "Click the link below to reset your password:\r\n\r\n{$resetLink}";
+     $fromAddress = $this->getEnv('MAIL_FROM_ADDRESS', 'noreply@yourdomain.com');
+     $fromName = $this->getEnv('MAIL_FROM_NAME', 'Leave Management');
+     $headers = "From: {$fromAddress}\r\n";
+     $headers .= "Reply-To: {$fromAddress}\r\n";
      $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-     // Prefer SMTP via PHPMailer when credentials are configured.
      $smtpHost = $this->getEnv('MAIL_HOST', null);
-     $smtpPort = $this->getEnv('MAIL_PORT', 587);
+     $smtpPort = (int) $this->getEnv('MAIL_PORT', 587);
      $smtpUser = $this->getEnv('MAIL_USERNAME', null);
      $smtpPass = $this->getEnv('MAIL_PASSWORD', null);
      $smtpSecure = $this->getEnv('MAIL_ENCRYPTION', PHPMailer::ENCRYPTION_STARTTLS);
@@ -118,27 +122,29 @@ class AuthService
          try {
              $mail = new PHPMailer(true);
              $mail->isSMTP();
+             $mail->SMTPDebug = SMTP::DEBUG_OFF;
              $mail->Host = $smtpHost;
              $mail->SMTPAuth = true;
              $mail->Username = $smtpUser;
              $mail->Password = $smtpPass;
              $mail->SMTPSecure = $smtpSecure;
              $mail->Port = $smtpPort;
-             $mail->setFrom($smtpUser, 'Leave Management');
+             $mail->setFrom($fromAddress, $fromName);
+             $mail->addReplyTo($fromAddress, $fromName);
              $mail->addAddress($email);
              $mail->isHTML(true);
              $mail->Subject = $subject;
              $mail->Body = "<p>Click the link below to reset your password:</p><p><a href=\"{$resetLink}\">{$resetLink}</a></p>";
-             $mail->AltBody = "Click the link below to reset your password:\n\n<{$resetLink}>";
+             $mail->AltBody = "Click the link below to reset your password:\n\n{$resetLink}";
              $mail->send();
              return true;
          } catch (\Exception $e) {
-             error_log('Password reset email error: ' . $mail->ErrorInfo);
+             error_log('Password reset email exception: ' . $e->getMessage());
+             error_log('PHPMailer ErrorInfo: ' . ($mail->ErrorInfo ?? 'N/A'));
              return false;
          }
      }
 
-     // Fallback to the default PHP mail() function if SMTP is not configured.
      return mail($email, $subject, $message, $headers);
  }
  public function validateResetToken($token)
