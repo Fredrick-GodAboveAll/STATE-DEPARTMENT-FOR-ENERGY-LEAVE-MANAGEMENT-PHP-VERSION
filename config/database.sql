@@ -65,3 +65,54 @@ INSERT INTO `users` (`name`, `email`, `password`, `role`, `email_verified`) VALU
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', TRUE),
 ('Regular User', 'user@example.com',
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', TRUE);
+
+-- -----------------------------------------------------------
+-- Departments table (future linking)
+-- -----------------------------------------------------------
+CREATE TABLE `departments` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(150) NOT NULL UNIQUE,
+  `head_of_department` INT UNSIGNED DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- -----------------------------------------------------------
+-- Employees table (flat, CSV-ready)
+-- -----------------------------------------------------------
+CREATE TABLE `employees` (
+  `payroll_number` INT UNSIGNED PRIMARY KEY,
+  `full_name` VARCHAR(150) NOT NULL,
+  `id_number` VARCHAR(30) NOT NULL,
+  `gender` ENUM('M','F') NOT NULL,
+  `age` TINYINT UNSIGNED NOT NULL,
+  `date_of_birth` DATE DEFAULT NULL,
+  `designation` VARCHAR(150) NOT NULL,
+  `job_group` VARCHAR(10) NOT NULL,
+  `employment_status` VARCHAR(20) DEFAULT NULL,
+  `engagement_type` VARCHAR(50) NOT NULL,
+  `rod_date` DATE DEFAULT NULL,
+  `special_need` TINYINT UNSIGNED DEFAULT 0 COMMENT '0 = no disability, 4 = disability',
+  `department_id` INT UNSIGNED DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`department_id`) REFERENCES `departments`(`id`)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- -----------------------------------------------------------
+-- Sample departments and employees
+-- -----------------------------------------------------------
+INSERT INTO `departments` (`name`, `head_of_department`) VALUES
+('Human Resources', NULL),
+('Finance', NULL);
+
+INSERT INTO `employees` (
+  payroll_number, full_name, id_number, gender, age,
+  date_of_birth, designation, job_group, employment_status,
+  engagement_type, rod_date, special_need, department_id
+) VALUES
+(10737, 'MR JULIUS ODHIAMBO MBOGAH', '84', 'M', 63,
+  '1963-04-15', 'Deputy Director - HRM & Development', 'R', '1',
+  'Permanent', '2026-11-04', 0, 1),
+(10738, 'MS ALICE WANJIKU KAMAU', '12345678', 'F', 34,
+  '1990-08-20', 'Accountant', 'K', '1', 'Permanent', '2045-03-15', 0, 2);

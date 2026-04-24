@@ -100,7 +100,14 @@ project-root/
 
 ---
 
-## 🔐 Authentication & Role‑Based Access
+## Documentation
+
+- The main project documentation is the top-level `README.md`.
+- Authentication-specific docs are stored in `docs/auth/`.
+- The definitive database schema and sample data are in `config/database.sql`.
+- Some legacy offline docs exist in `docs/auth/`; review them later and remove any unused files.
+
+## Authentication & Role‑Based Access
 
 The system implements a secure authentication module with:
 
@@ -132,117 +139,19 @@ Default users (all passwords are `password`):
 
 ## 🗄️ Database Schema
 
-The database is named `leave_management`. Key tables:
+The active schema is defined in `config/database.sql`. It includes:
 
 - `users` – stores user credentials and roles (`admin`, `user`).
 - `password_resets` – stores password reset tokens with expiry.
-- `employees` – employee details linked to `users` and `departments`.
-- `departments` – department list.
-- `leave_types` – leave categories (Annual, Sick, etc.).
+- `departments` – department list for future linking.
+- `employees` – import-ready table for CSV upload with `gender`, `age`, `date_of_birth`, `designation`, `job_group`, `employment_status`, `engagement_type`, `rod_date`, `special_need`, and optional `department_id`.
+- `leave_types` – leave categories like Annual, Sick, and Personal.
 - `leaves` – leave records linked to employees and leave types.
 - `holidays` – public holidays.
 
-**Sample SQL Schema:**
-```sql
--- Create database
-CREATE DATABASE IF NOT EXISTS `leave_management`;
-USE `leave_management`;
+The dashboard uses the `employees` table count to display live Total Employees values instead of hard-coded numbers.
 
--- Users table
-CREATE TABLE `users` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `email` VARCHAR(255) UNIQUE NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
-    `role` ENUM('admin', 'user') DEFAULT 'user',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Password resets table
-CREATE TABLE `password_resets` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `email` VARCHAR(255) NOT NULL,
-    `token` VARCHAR(255) NOT NULL,
-    `expires_at` TIMESTAMP NOT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Departments table
-CREATE TABLE `departments` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `description` TEXT,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Employees table
-CREATE TABLE `employees` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `user_id` INT NOT NULL,
-    `department_id` INT,
-    `employee_id` VARCHAR(50) UNIQUE,
-    `phone` VARCHAR(20),
-    `address` TEXT,
-    `hire_date` DATE,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`department_id`) REFERENCES `departments`(`id`) ON DELETE SET NULL
-);
-
--- Leave types table
-CREATE TABLE `leave_types` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `description` TEXT,
-    `days_allowed` INT DEFAULT 0,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Leaves table
-CREATE TABLE `leaves` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `employee_id` INT NOT NULL,
-    `leave_type_id` INT NOT NULL,
-    `start_date` DATE NOT NULL,
-    `end_date` DATE NOT NULL,
-    `days_requested` INT NOT NULL,
-    `reason` TEXT,
-    `status` ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
-    `approved_by` INT,
-    `approved_at` TIMESTAMP NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`employee_id`) REFERENCES `employees`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`leave_type_id`) REFERENCES `leave_types`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`approved_by`) REFERENCES `users`(`id`) ON DELETE SET NULL
-);
-
--- Holidays table
-CREATE TABLE `holidays` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `date` DATE NOT NULL,
-    `description` TEXT,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Insert sample data
-INSERT INTO `users` (`name`, `email`, `password`, `role`) VALUES
-('Admin User', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'),
-('Regular User', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
-
-INSERT INTO `departments` (`name`, `description`) VALUES
-('IT Department', 'Information Technology'),
-('HR Department', 'Human Resources'),
-('Finance Department', 'Financial Operations');
-
-INSERT INTO `leave_types` (`name`, `description`, `days_allowed`) VALUES
-('Annual Leave', 'Regular annual vacation', 25),
-('Sick Leave', 'Medical leave', 10),
-('Personal Leave', 'Personal matters', 5);
-```
-
-A complete SQL schema is provided in `config/database.sql`. Initial data includes sample users, departments, leave types, and test records.
+Use `config/database.sql` as the source of truth for schema definitions and sample seed data.
 
 ---
 
@@ -270,7 +179,7 @@ EMAIL_PASS=your_app_password
 ```
 
 ### 3. Create Database
-Import the SQL schema (located in `database/schema.sql`) into your MySQL server.
+Import the SQL schema from `config/database.sql` into your MySQL server.
 
 ### 4. Serve the Application
 From the project root, run:

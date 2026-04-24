@@ -2,6 +2,8 @@
 
 This folder contains the authentication documentation for the PHP Leave Management System.
 
+> Note: Some legacy offline documentation is present in this folder. Review it later and remove any unused files to keep the docs clean.
+
 ## Files
 
 - `AUTHENTICATION_DOC.md` — Overview of authentication flow, CSRF protection, password reset, session, and logout.
