@@ -22,6 +22,11 @@ class User extends Model
  'role' => $data['role'] ?? 'user'
  ]);
  }
+ public function deleteByEmail($email)
+ {
+     $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE email = ?");
+     return $stmt->execute([$email]);
+ }
  public function updateLastLogin($id)
  {
  $stmt = $this->db->prepare(

@@ -64,17 +64,20 @@ class AuthService
  }
  public function register($data)
  {
- // Reject duplicate email addresses and store a hashed password.
- if ($this->userModel->findByEmail($data['email'])) return false;
- $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
- $result = $this->userModel->create($data);
+     if ($this->userModel->findByEmail($data['email'])) {
+         return 'duplicate';
+     }
+     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+     $result = $this->userModel->create($data);
  
- // Send email verification link after registration
- if ($result) {
-     // This will throw OfflineException if email fails
-     $this->sendVerificationEmail($data['email']);
- }
- return $result;
+     if ($result) {
+         if ($this->sendVerificationEmail($data['email'])) {
+             return true;
+         }
+         $this->userModel->deleteByEmail($data['email']);
+         return 'email_failed';
+     }
+     return false;
  }
  public function logout()
  {
@@ -83,21 +86,22 @@ class AuthService
  }
  public function sendResetLink($email)
  {
- $user = $this->userModel->findByEmail($email);
- if (!$user) return false;
-
- $this->passwordResetModel->deleteByEmail($email);
- $token = bin2hex(random_bytes(32));
-
- if ($this->passwordResetModel->createToken($email, $token, null)) {
-     // Only consider the reset request successful if the email actually sends.
-     // If sending fails, remove the token so the user is not given a false success flow.
-     if ($this->sendPasswordResetEmail($email, $token)) {
-         return $token;
+     $user = $this->userModel->findByEmail($email);
+     if (!$user) {
+         return 'not_found';
      }
+ 
      $this->passwordResetModel->deleteByEmail($email);
- }
- return false;
+     $token = bin2hex(random_bytes(32));
+ 
+     if ($this->passwordResetModel->createToken($email, $token, null)) {
+         if ($this->sendPasswordResetEmail($email, $token)) {
+             return true;
+         }
+         $this->passwordResetModel->deleteByEmail($email);
+         return 'email_failed';
+     }
+     return 'email_failed';
  }
 
  protected function sendPasswordResetEmail($email, $token)

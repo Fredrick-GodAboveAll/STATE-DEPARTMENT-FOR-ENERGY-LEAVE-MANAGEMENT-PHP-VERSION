@@ -4,7 +4,6 @@ use App\Services\AuthService;
 use App\Utils\Validator;
 use App\Core\Csrf;
 use App\Core\Session;
-use App\Core\OfflineDetector;
 use App\Models\User;
 class AuthController extends Controller
 {
@@ -45,79 +44,67 @@ class AuthController extends Controller
  }
  public function register()
  {
- // Registration requires email verification, so check if system is online
- if (OfflineDetector::isOffline()) {
- Session::flash('offline_feature', 'Registration');
- header('Location: /offline'); exit;
- }
- $title = 'Register';
- $content = '../app/Views/auth/register.php';
- include '../app/Views/layouts/auth.php';
+     $title = 'Register';
+     $content = '../app/Views/auth/register.php';
+     include '../app/Views/layouts/auth.php';
  }
  public function doRegister()
  {
- // Check if system is offline before allowing registration
- if (OfflineDetector::isOffline()) {
- Session::flash('error', 'Email verification not sent due to being offline. Please connect to the internet.');
- header('Location: /register'); exit;
- }
- // Ensure the registration request is secure before validation.
- Csrf::validate($_POST['csrf_token'] ?? '');
- $validator = new Validator();
- $rules = [
- 'name' => 'required',
- 'email' => 'required|email',
- 'password' => 'required|min:8|confirmed',
- 'password_confirm' => 'required'
- ];
- if (!$validator->validate($_POST, $rules)) {
- Session::flash('errors', $validator->errors());
- Session::flash('old', $_POST);
- header('Location: /register'); exit;
- }
- $data = ['name' => $_POST['name'], 'email' => $_POST['email'],
- 'password' => $_POST['password']];
- if ($this->authService->register($data)) {
- Session::flash('success', 'Registration successful. Please check your email to verify your account.');
- header('Location: /login'); exit;
- } else {
- Session::flash('error', 'Email already exists.');
- header('Location: /register'); exit;
- }
+     Csrf::validate($_POST['csrf_token'] ?? '');
+     $validator = new Validator();
+     $rules = [
+         'name' => 'required',
+         'email' => 'required|email',
+         'password' => 'required|min:8|confirmed',
+         'password_confirm' => 'required'
+     ];
+     if (!$validator->validate($_POST, $rules)) {
+         Session::flash('errors', $validator->errors());
+         Session::flash('old', $_POST);
+         header('Location: /register'); exit;
+     }
+     $data = ['name' => $_POST['name'], 'email' => $_POST['email'],
+         'password' => $_POST['password']];
+     $result = $this->authService->register($data);
+     if ($result === true) {
+         Session::flash('success', 'Registration successful. Please check your email to verify your account.');
+         header('Location: /login'); exit;
+     }
+     if ($result === 'duplicate') {
+         Session::flash('error', 'Email already exists.');
+     } elseif ($result === 'email_failed') {
+         Session::flash('error', 'Unable to send verification email right now. Please try again later.');
+     } else {
+         Session::flash('error', 'Registration failed. Please try again later.');
+     }
+     Session::flash('old', $_POST);
+     header('Location: /register'); exit;
  }
  public function forgotPassword()
  {
- // Password reset requires email capability, so check if system is online
- if (OfflineDetector::isOffline()) {
- Session::flash('offline_feature', 'Password Reset');
- header('Location: /offline'); exit;
- }
- $title = 'Forgot Password';
- $content = '../app/Views/auth/forgot-password.php';
- include '../app/Views/layouts/auth.php';
+     $title = 'Forgot Password';
+     $content = '../app/Views/auth/forgot-password.php';
+     include '../app/Views/layouts/auth.php';
  }
  public function doForgotPassword()
  {
- // Check if system is offline before allowing password reset
- if (OfflineDetector::isOffline()) {
- Session::flash('error', 'Password reset is not available offline. Please connect to the internet.');
- header('Location: /forgot-password'); exit;
- }
- // Protect the forgot-password form from CSRF attacks.
- Csrf::validate($_POST['csrf_token'] ?? '');
- $validator = new Validator();
- if (!$validator->validate($_POST, ['email' => 'required|email'])) {
- Session::flash('errors', $validator->errors());
- header('Location: /forgot-password'); exit;
- }
- $token = $this->authService->sendResetLink($_POST['email']);
- if ($token) {
- Session::flash('reset_email', $_POST['email']);
- header('Location: /confirm-mail'); exit;
- } else {
- Session::flash('error', 'Unable to send reset email. Please check your email address and SMTP settings.');
- header('Location: /forgot-password'); exit;
- }
+     Csrf::validate($_POST['csrf_token'] ?? '');
+     $validator = new Validator();
+     if (!$validator->validate($_POST, ['email' => 'required|email'])) {
+         Session::flash('errors', $validator->errors());
+         header('Location: /forgot-password'); exit;
+     }
+     $result = $this->authService->sendResetLink($_POST['email']);
+     if ($result === true) {
+         Session::flash('reset_email', $_POST['email']);
+         header('Location: /confirm-mail'); exit;
+     }
+     if ($result === 'email_failed') {
+         Session::flash('error', 'Unable to send reset email right now. Please try again later.');
+     } else {
+         Session::flash('success', 'If that email is registered, you will receive a password reset link shortly.');
+     }
+     header('Location: /forgot-password'); exit;
  }
  public function confirmMail()
  {
@@ -127,11 +114,6 @@ class AuthController extends Controller
  }
  public function resetPassword()
  {
- // Check if system is offline before showing reset form
- if (OfflineDetector::isOffline()) {
- Session::flash('offline_feature', 'Password Reset');
- header('Location: /offline'); exit;
- }
  // The reset link contains a token in the query string. We validate it before showing the form.
  $token = $_GET['token'] ?? '';
  if (!$token) { header('Location: /forgot-password'); exit; }
@@ -146,11 +128,6 @@ class AuthController extends Controller
  
  public function doResetPassword()
  {
- // Check if system is offline before allowing password reset
- if (OfflineDetector::isOffline()) {
- Session::flash('error', 'Password reset is not available offline. Please connect to the internet.');
- header('Location: /forgot-password'); exit;
- }
  try {
  Csrf::validate($_POST['csrf_token'] ?? '');
  } catch (\Exception $e) {
@@ -208,11 +185,6 @@ class AuthController extends Controller
  
  public function verifyEmail()
  {
- // Check if system is offline before allowing email verification
- if (OfflineDetector::isOffline()) {
- Session::flash('error', 'Email verification is not available offline. Please connect to the internet.');
- header('Location: /login'); exit;
- }
  $token = $_GET['token'] ?? '';
  if (!$token) {
  Session::flash('error', 'Invalid verification link.');
