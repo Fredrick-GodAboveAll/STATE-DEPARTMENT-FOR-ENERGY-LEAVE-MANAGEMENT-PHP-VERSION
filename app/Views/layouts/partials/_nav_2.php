@@ -43,52 +43,82 @@
                     <li class="nav-item"><a class="nav-link" href="dashboard/analytics.html">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Analytics</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard/crm.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">CRM</span></div>
-                      </a><!-- more inner pages--></li>
-                    
-                    <li class="nav-item"><a class="nav-link" href="dashboard/project-management.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Management</span></div>
-                      </a><!-- more inner pages--></li>
-                    
-                    <li class="nav-item"><a class="nav-link" href="dashboard/support-desk.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Support desk</span><span class="badge rounded-pill ms-2 badge-subtle-success">New</span></div>
-                      </a><!-- more inner pages--></li>
 
                   </ul>
                 </li>
 
-
-                <!-- PROFILES  -->
+                 <!-- LEAVE  -->
                 <li class="nav-item"><!-- label-->
                   <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
-                    <div class="col-auto navbar-vertical-label">Profile</div>
+                    <div class="col-auto navbar-vertical-label">Attendance</div>
                     <div class="col ps-0">
                       <hr class="mb-0 navbar-vertical-divider" />
                     </div>
                   </div><!-- parent pages-->
                   
-                  <a class="nav-link dropdown-indicator" href="#user" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">User</span></div>
+                  <a class="nav-link dropdown-indicator" href="#leave" 
+                  role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="fas fa-umbrella-beach"></span>
+                      </span><span class="nav-link-text ps-1">Leave</span></div>
                   </a>
-                  <ul class="nav collapse" id="user">
+                  <ul class="nav collapse" id="leave">
                     <li class="nav-item"><a class="nav-link" href="pages/user/profile.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Profile</span></div>
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Records</span></div>
                       </a><!-- more inner pages--></li>
                     <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Settings</span></div>
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Types</span></div>
+                      </a><!-- more inner pages--></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Reports</span></div>
+                      </a><!-- more inner pages--></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Policies</span></div>
                       </a><!-- more inner pages--></li>
                   </ul><!-- parent pages-->
 
                   <a class="nav-link" href="pages/starter.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-flag"></span></span><span class="nav-link-text ps-1">Starter</span></div>
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon"><span class="far fa-calendar"></span>
+                    </span><span class="nav-link-text ps-1">Time Off & Holidays</span></div>
                   </a><!-- parent pages-->
                   
                 </li>
 
+                <!-- EMPLOYEES  -->
+                <li class="nav-item"><!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">management</div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div><!-- parent pages-->
+                  
+                  <a class="nav-link dropdown-indicator" href="#employees" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon">
+                      <span class="fas fa-users"></span></span><span class="nav-link-text ps-1">Employee Profiles</span></div>
+                  </a>
+                  <ul class="nav collapse" id="employees">
+                    <li class="nav-item"><a class="nav-link" href="pages/user/profile.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employees List</span></div>
+                      </a><!-- more inner pages--></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employees Detail</span></div>
+                      </a><!-- more inner pages--></li>
+                  </ul><!-- parent pages-->
+
+                  <a class="nav-link" href="pages/starter.html" role="button">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon">
+                      <span class="fas fa-sitemap"></span></span>
+                      <span class="nav-link-text ps-1">Departments & Groups</span></div>
+                  </a><!-- parent pages-->
+                  
+                </li>
 
                 <!-- APPS  -->
                 <li class="nav-item"><!-- label-->
+
                   <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                     <div class="col-auto navbar-vertical-label">App</div>
                     <div class="col ps-0">
@@ -97,27 +127,15 @@
                   </div><!-- parent pages-->
                   
                   <a class="nav-link" href="app/calendar.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span><span class="nav-link-text ps-1">Calendar</span></div>
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
+                    <span class="nav-link-text ps-1">Calendar</span></div>
+                  </a><!-- parent pages-->
+
+                  <a class="nav-link" href="app/calendar.html" role="button">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-upload"></span></span>
+                    <span class="nav-link-text ps-1">Bulk Upload</span></div>
                   </a><!-- parent pages-->
                   
-                  <a class="nav-link" href="app/chat.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comments"></span></span><span class="nav-link-text ps-1">Chat</span></div>
-                  </a><!-- parent pages-->
-                  
-                  <a class="nav-link dropdown-indicator" href="#email" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="email">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-envelope-open"></span></span><span class="nav-link-text ps-1">Email</span></div>
-                  </a>
-                  <ul class="nav collapse" id="email">
-                    <li class="nav-item"><a class="nav-link" href="app/email/inbox.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Inbox</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="app/email/email-detail.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Email detail</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="app/email/compose.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Compose</span></div>
-                      </a><!-- more inner pages--></li>
-                  </ul><!-- parent pages-->
                   
                   <a class="nav-link dropdown-indicator" href="#events" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="events">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-day"></span></span><span class="nav-link-text ps-1">Events</span></div>
@@ -133,7 +151,7 @@
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Event list</span></div>
                       </a><!-- more inner pages--></li>
                   </ul><!-- parent pages-->
-                  
+
                   
                   <a class="nav-link dropdown-indicator" href="#e-learning" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="e-learning">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-graduation-cap"></span></span><span class="nav-link-text ps-1">E learning</span><span class="badge rounded-pill ms-2 badge-subtle-success">New</span></div>
@@ -193,9 +211,34 @@
                       </a><!-- more inner pages--></li>
                   </ul>
 
-
                 </li>
 
+                 <!-- PROFILES  -->
+                <li class="nav-item"><!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">Profile</div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div><!-- parent pages-->
+                  
+                  <a class="nav-link dropdown-indicator" href="#user" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">User</span></div>
+                  </a>
+                  <ul class="nav collapse" id="user">
+                    <li class="nav-item"><a class="nav-link" href="pages/user/profile.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Profile</span></div>
+                      </a><!-- more inner pages--></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Settings</span></div>
+                      </a><!-- more inner pages--></li>
+                  </ul><!-- parent pages-->
+
+                  <a class="nav-link" href="pages/starter.html" role="button">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-flag"></span></span><span class="nav-link-text ps-1">Starter</span></div>
+                  </a><!-- parent pages-->
+                  
+                </li>
 
                 <!-- DOCUMENTATION  -->
                 <li class="nav-item"><!-- label-->
@@ -205,53 +248,19 @@
                       <hr class="mb-0 navbar-vertical-divider" />
                     </div>
                   </div><!-- parent pages--><a class="nav-link" href="documentation/getting-started.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-rocket"></span></span><span class="nav-link-text ps-1">Getting started</span></div>
-                  </a><!-- parent pages-->
-
-
-                  <a class="nav-link dropdown-indicator" href="#pricing" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="pricing">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-tags"></span></span><span class="nav-link-text ps-1">Pricing</span></div>
-                  </a>
-                  <ul class="nav collapse" id="pricing">
-                    <li class="nav-item"><a class="nav-link" href="pages/pricing/pricing-default.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pricing default</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/pricing/pricing-alt.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pricing alt</span></div>
-                      </a><!-- more inner pages--></li>
-                  </ul><!-- parent pages-->
-                  
-                  <a class="nav-link dropdown-indicator" href="#customization" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="customization">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-wrench"></span></span><span class="nav-link-text ps-1">Customization</span></div>
-                  </a>
-                  <ul class="nav collapse" id="customization">
-                    <li class="nav-item"><a class="nav-link" href="documentation/customization/configuration.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Configuration</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="documentation/customization/styling.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Styling</span><span class="badge rounded-pill ms-2 badge-subtle-success">Updated</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="documentation/customization/dark-mode.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Dark mode</span></div>
-                      </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="documentation/customization/plugin.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Plugin</span></div>
-                      </a><!-- more inner pages--></li>
-                  </ul><!-- parent pages-->
-                  
-                  <a class="nav-link" href="documentation/faq.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-question-circle"></span></span><span class="nav-link-text ps-1">Faq</span></div>
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-rocket"></span></span>
+                    <span class="nav-link-text ps-1">Getting started</span></div>
                   </a><!-- parent pages-->
                   
                   <a class="nav-link" href="changelog.html" role="button">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code-branch"></span></span><span class="nav-link-text ps-1">Changelog</span></div>
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code-branch"></span></span>
+                    <span class="nav-link-text ps-1">Changelog</span></div>
                   </a>
                 </li>
 
               </ul>
 
-
-              <!-- SEETINGS  -->
+              <!-- SETTINGS  -->
               <div class="settings my-3">
                 <div class="card shadow-none">
                   <div class="card-body alert mb-0" role="alert">
@@ -263,7 +272,6 @@
                   </div>
                 </div>
               </div>
-
 
             </div>
           </div>
