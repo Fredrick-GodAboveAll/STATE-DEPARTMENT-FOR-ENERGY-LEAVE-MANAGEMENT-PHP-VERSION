@@ -8,7 +8,7 @@
         <!-- ===============================================-->
         <!--    Document Title-->
         <!-- ===============================================-->
-        <title><?= $title ?? 'Admin Dashboard' ?></title>
+        <title> <?= $title ?? 'Admin Dashboard' ?> </title>
         <!-- ===============================================-->
         <!--    Favicons-->
         <!-- ===============================================-->
@@ -24,6 +24,11 @@
         <!-- ===============================================-->
         <!--    Stylesheets-->
         <!-- ===============================================-->
+        <link href="../vendors/select2/select2.min.css" rel="stylesheet">
+        <link href="../vendors/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+        <link href="../vendors/datatables.net-bs5/dataTables.bootstrap5.min.css" rel="stylesheet">
+        <link href="../vendors/prism/prism-okaidia.css" rel="stylesheet">
+        <link href="../vendors/prism/prism-okaidia.css" rel="stylesheet">
         <link href="../vendors/leaflet/leaflet.css" rel="stylesheet">
         <link href="../vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
         <link href="../vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
@@ -51,6 +56,7 @@
             }
         </script>
     </head>
+
 
   <body>
     <!-- ===============================================--><!--    Main Content--><!-- ===============================================-->
@@ -154,6 +160,14 @@
         <script src="../vendors/bootstrap/bootstrap.min.js"></script>
         <script src="../vendors/anchorjs/anchor.min.js"></script>
         <script src="../vendors/is/is.min.js"></script>
+        <script src="../vendors/jquery/jquery.min.js"> </script>
+        <script src="../vendors/prism/prism.js"></script>
+        <script src="../vendors/select2/select2.min.js"> </script>
+        <script src="../vendors/select2/select2.full.min.js"> </script>
+        <script src="../vendors/datatables.net/dataTables.min.js"></script>
+        <script src="../vendors/datatables.net-bs5/dataTables.bootstrap5.min.js"> </script>
+        <script src="../vendors/datatables.net-fixedcolumns/dataTables.fixedColumns.min.js"> </script>
+        <script src="../vendors/prism/prism.js"></script>
         <script src="../vendors/chart/chart.umd.js"></script>
         <script src="../vendors/leaflet/leaflet.js"></script>
         <script src="../vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
