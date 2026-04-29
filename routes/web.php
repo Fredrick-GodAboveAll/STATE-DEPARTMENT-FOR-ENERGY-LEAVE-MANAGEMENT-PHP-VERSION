@@ -21,6 +21,18 @@ $router->post('/logout', 'AuthController@logout');
 $router->get('/lock-screen', 'AuthController@lockScreen', [AuthMiddleware::class]);
 $router->post('/unlock', 'AuthController@doUnlock', [AuthMiddleware::class]);
 $router->get('/dashboard', 'DashboardController@index', [AuthMiddleware::class]);
+
+// Future HR routes (pages will be added later)
+$router->get('/employees', 'EmployeeController@index', [AuthMiddleware::class]);
+$router->get('/employees/detail', 'EmployeeController@detail', [AuthMiddleware::class]);
+$router->get('/employees/departments', 'EmployeeController@departments', [AuthMiddleware::class]);
+$router->get('/employees/upload', 'EmployeeController@upload', [AuthMiddleware::class]);
+$router->post('/employees/import', 'EmployeeController@import', [AuthMiddleware::class]);
+$router->get('/departments', 'DepartmentController@index', [AuthMiddleware::class]);
+$router->get('/leave-types', 'LeaveTypeController@index', [AuthMiddleware::class]);
+$router->get('/leaves', 'LeaveController@index', [AuthMiddleware::class]);
+$router->get('/holidays', 'HolidaysController@index', [AuthMiddleware::class]);
+
 // Admin-only route example
 $router->get('/admin/users', 'AdminController@index',
  [AuthMiddleware::class, [RoleMiddleware::class, 'admin']]);

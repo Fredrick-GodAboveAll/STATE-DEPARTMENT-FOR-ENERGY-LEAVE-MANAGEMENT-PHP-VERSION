@@ -100,15 +100,15 @@
                       <span class="fas fa-users"></span></span><span class="nav-link-text ps-1">Employee Profiles</span></div>
                   </a>
                   <ul class="nav collapse" id="employees">
-                    <li class="nav-item"><a class="nav-link" href="pages/user/profile.html">
+                    <li class="nav-item"><a class="nav-link" href="/employees">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employees List</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employees Detail</span></div>
+                    <li class="nav-item"><a class="nav-link" href="/employees/detail">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employee Detail</span></div>
                       </a><!-- more inner pages--></li>
                   </ul><!-- parent pages-->
 
-                  <a class="nav-link" href="pages/starter.html" role="button">
+                  <a class="nav-link" href="/departments" role="button">
                     <div class="d-flex align-items-center"><span class="nav-link-icon">
                       <span class="fas fa-sitemap"></span></span>
                       <span class="nav-link-text ps-1">Departments & Groups</span></div>
