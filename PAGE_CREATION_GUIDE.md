@@ -230,6 +230,30 @@ class YourController extends Controller
 - `$stmt->fetch()` - Fetch single row
 - `$stmt->fetchAll()` - Fetch all rows
 
+## Environment Variables and dotenv
+
+This system can use an `.env` file for sensitive credentials. The recommended package is `vlucas/phpdotenv`.
+
+Add these settings to your `.env` file:
+
+```bash
+DB_HOST=localhost
+DB_NAME=leave_management
+DB_USER=root
+DB_PASS=
+```
+
+Then load env variables at application boot in `public/index.php`:
+
+```php
+if (class_exists(\Dotenv\Dotenv::class)) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->safeLoad();
+}
+```
+
+The database config file can then use `getenv('DB_HOST')` and related values.
+
 ## Complete Example
 
 Let's create a "Reports" page as an example:
