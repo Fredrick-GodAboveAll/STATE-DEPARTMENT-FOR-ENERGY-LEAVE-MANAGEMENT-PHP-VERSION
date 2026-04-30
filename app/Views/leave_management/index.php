@@ -1,4 +1,4 @@
-<?php $currentPage = 'analytics'; ?>
+<?php $currentPage = 'leave_management'; ?>
 
 <div class="row g-3 mb-3">
   <div class="col-xxl-12 col-xl-12">

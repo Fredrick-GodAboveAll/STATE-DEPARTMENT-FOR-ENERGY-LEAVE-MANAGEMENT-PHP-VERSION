@@ -33,14 +33,14 @@
                 <li class="nav-item"><!-- parent pages-->
                   
                 
-                  <a class="nav-link dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="dashboard">
+                  <a class="nav-link dropdown-indicator <?php echo (in_array($currentPage, ['dashboard', 'analytics'])) ? '' : 'collapsed'; ?>" href="#dashboard" role="button" data-bs-toggle="collapse" aria-expanded="<?php echo (in_array($currentPage, ['dashboard', 'analytics'])) ? 'true' : 'false'; ?>" aria-controls="dashboard">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-chart-pie"></span></span><span class="nav-link-text ps-1">Dashboard</span></div>
                   </a>
-                  <ul class="nav collapse show" id="dashboard">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">
+                  <ul class="nav collapse <?php echo (in_array($currentPage, ['dashboard', 'analytics'])) ? 'show' : ''; ?>" id="dashboard">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'dashboard') ? 'active' : ''; ?>" href="/dashboard">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Default</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard/analytics.html">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'analytics') ? 'active' : ''; ?>" href="/dashboard/analytics">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Analytics</span></div>
                       </a><!-- more inner pages--></li>
 
@@ -56,29 +56,29 @@
                     </div>
                   </div><!-- parent pages-->
                   
-                  <a class="nav-link dropdown-indicator" href="#leave" 
-                  role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
+                  <a class="nav-link dropdown-indicator <?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? '' : 'collapsed'; ?>" href="#leave"
+                  role="button" data-bs-toggle="collapse" aria-expanded="<?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? 'true' : 'false'; ?>" aria-controls="user">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-icon">
                         <span class="fas fa-umbrella-beach"></span>
                       </span><span class="nav-link-text ps-1">Leave</span></div>
                   </a>
-                  <ul class="nav collapse" id="leave">
-                    <li class="nav-item"><a class="nav-link" href="pages/user/profile.html">
+                  <ul class="nav collapse <?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? 'show' : ''; ?>" id="leave">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_management') ? 'active' : ''; ?>" href="/leaves">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Records</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_types') ? 'active' : ''; ?>" href="/leave-types">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Types</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_management') ? 'active' : ''; ?>" href="/leaves">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Reports</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/user/settings.html">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_types') ? 'active' : ''; ?>" href="/leave-types">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Policies</span></div>
                       </a><!-- more inner pages--></li>
                   </ul><!-- parent pages-->
 
-                  <a class="nav-link" href="pages/starter.html" role="button">
+                  <a class="nav-link <?php echo ($currentPage === 'holidays') ? 'active' : ''; ?>" href="/holidays" role="button">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-icon"><span class="far fa-calendar"></span>
                     </span><span class="nav-link-text ps-1">Time Off & Holidays</span></div>
@@ -95,12 +95,12 @@
                     </div>
                   </div><!-- parent pages-->
                   
-                  <a class="nav-link dropdown-indicator" href="#employees" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="user">
+                  <a class="nav-link dropdown-indicator <?php echo (in_array($currentPage, ['employees'])) ? '' : 'collapsed'; ?>" href="#employees" role="button" data-bs-toggle="collapse" aria-expanded="<?php echo (in_array($currentPage, ['employees'])) ? 'true' : 'false'; ?>" aria-controls="user">
                     <div class="d-flex align-items-center"><span class="nav-link-icon">
                       <span class="fas fa-users"></span></span><span class="nav-link-text ps-1">Employee Profiles</span></div>
                   </a>
-                  <ul class="nav collapse" id="employees">
-                    <li class="nav-item"><a class="nav-link" href="/employees">
+                  <ul class="nav collapse <?php echo (in_array($currentPage, ['employees'])) ? 'show' : ''; ?>" id="employees">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'employees') ? 'active' : ''; ?>" href="/employees">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Employees List</span></div>
                       </a><!-- more inner pages--></li>
                     <li class="nav-item"><a class="nav-link" href="/employees/detail">
@@ -108,10 +108,16 @@
                       </a><!-- more inner pages--></li>
                   </ul><!-- parent pages-->
 
-                  <a class="nav-link" href="/departments" role="button">
+                  <a class="nav-link <?php echo ($currentPage === 'departments') ? 'active' : ''; ?>" href="/departments" role="button">
                     <div class="d-flex align-items-center"><span class="nav-link-icon">
                       <span class="fas fa-sitemap"></span></span>
                       <span class="nav-link-text ps-1">Departments & Groups</span></div>
+                  </a><!-- parent pages-->
+
+                  <a class="nav-link <?php echo ($currentPage === 'reports') ? 'active' : ''; ?>" href="/reports" role="button">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon">
+                      <span class="fas fa-chart-bar"></span></span>
+                      <span class="nav-link-text ps-1">Reports</span></div>
                   </a><!-- parent pages-->
                   
                 </li>

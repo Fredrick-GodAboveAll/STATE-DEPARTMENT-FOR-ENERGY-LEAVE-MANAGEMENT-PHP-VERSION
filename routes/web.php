@@ -21,6 +21,7 @@ $router->post('/logout', 'AuthController@logout');
 $router->get('/lock-screen', 'AuthController@lockScreen', [AuthMiddleware::class]);
 $router->post('/unlock', 'AuthController@doUnlock', [AuthMiddleware::class]);
 $router->get('/dashboard', 'DashboardController@index', [AuthMiddleware::class]);
+$router->get('/dashboard/analytics', 'DashboardController@analytics', [AuthMiddleware::class]);
 
 // Future HR routes (pages will be added later)
 $router->get('/employees', 'EmployeeController@index', [AuthMiddleware::class]);
@@ -32,6 +33,7 @@ $router->get('/departments', 'DepartmentController@index', [AuthMiddleware::clas
 $router->get('/leave-types', 'LeaveTypeController@index', [AuthMiddleware::class]);
 $router->get('/leaves', 'LeaveController@index', [AuthMiddleware::class]);
 $router->get('/holidays', 'HolidaysController@index', [AuthMiddleware::class]);
+$router->get('/reports', 'ReportsController@index', [AuthMiddleware::class]);
 
 // Admin-only route example
 $router->get('/admin/users', 'AdminController@index',

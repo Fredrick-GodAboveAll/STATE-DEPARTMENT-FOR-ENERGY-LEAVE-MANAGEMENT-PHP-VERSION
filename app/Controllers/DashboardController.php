@@ -14,4 +14,12 @@ class DashboardController extends Controller
  $content = '../app/Views/dashboard/index.php';
  include '../app/Views/layouts/admin.php';
  }
+
+ public function analytics()
+ {
+ $title = 'Analytics';
+ $currentPage = 'analytics';
+ $content = '../app/Views/dashboard/dashboard_analytics.php';
+ include '../app/Views/layouts/admin.php';
+ }
 }

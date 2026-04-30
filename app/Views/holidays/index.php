@@ -1,4 +1,4 @@
-<?php $currentPage = 'analytics'; ?>
+<?php $currentPage = 'holidays'; ?>
 
 <div class="row g-3 mb-3">
   <div class="col-xxl-12 col-xl-12">
