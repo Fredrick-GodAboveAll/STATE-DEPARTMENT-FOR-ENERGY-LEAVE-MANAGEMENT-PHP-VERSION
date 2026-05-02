@@ -2,7 +2,14 @@
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use App\Middleware\RoleMiddleware;
-// Guest routes
+
+// Route Structure Rules
+// GET routes for displaying pages
+// POST routes for form submissions
+// Always include `[AuthMiddleware::class]` for protected routes
+// Use consistent URL patterns
+
+// Guest routes ----- AUTHENTICATION 
 $router->get('/', 'AuthController@login', [GuestMiddleware::class]);
 $router->get('/login', 'AuthController@login', [GuestMiddleware::class]);
 $router->post('/login', 'AuthController@doLogin', [GuestMiddleware::class]);
@@ -18,21 +25,38 @@ $router->get('/offline', 'AuthController@offline');
 // Protected routes
 $router->get('/logout', 'AuthController@logout');
 $router->post('/logout', 'AuthController@logout');
+
 $router->get('/lock-screen', 'AuthController@lockScreen', [AuthMiddleware::class]);
 $router->post('/unlock', 'AuthController@doUnlock', [AuthMiddleware::class]);
-$router->get('/dashboard', 'DashboardController@index', [AuthMiddleware::class]);
-$router->get('/dashboard/analytics', 'DashboardController@analytics', [AuthMiddleware::class]);
 
+// Dashboard Routes 
+$router->get('/dashboard', 'DashboardController@index', [AuthMiddleware::class]);
+$router->get('/analyticcs', 'DashboardController@analytics', [AuthMiddleware::class]);
+
+// Applications Routes 
+$router->get('/calender', 'ApplicationsController@index', [AuthMiddleware::class]);
+
+// Leave Management Routes 
+$router->get('/leave_management', 'LeaveController@index', [AuthMiddleware::class]);
+
+$router->get('/lrecords', 'LeaveController@leave_records', [AuthMiddleware::class]);
+$router->get('/leave-types', 'LeaveController@leave_types', [AuthMiddleware::class]);
+$router->get('/leave-reports', 'LeaveController@leaves_reports', [AuthMiddleware::class]);
+$router->get('/leave-policies', 'LeaveController@leave_policies', [AuthMiddleware::class]);
+
+// Holiday Route 
+$router->get('/holidays', 'HolidaysController@index', [AuthMiddleware::class]);
+
+
+// Other Routes 
 // Future HR routes (pages will be added later)
 $router->get('/employees', 'EmployeeController@index', [AuthMiddleware::class]);
+
 $router->get('/employees/detail', 'EmployeeController@detail', [AuthMiddleware::class]);
 $router->get('/employees/departments', 'EmployeeController@departments', [AuthMiddleware::class]);
 $router->get('/employees/upload', 'EmployeeController@upload', [AuthMiddleware::class]);
 $router->post('/employees/import', 'EmployeeController@import', [AuthMiddleware::class]);
 $router->get('/departments', 'DepartmentController@index', [AuthMiddleware::class]);
-$router->get('/leave-types', 'LeaveTypeController@index', [AuthMiddleware::class]);
-$router->get('/leaves', 'LeaveController@index', [AuthMiddleware::class]);
-$router->get('/holidays', 'HolidaysController@index', [AuthMiddleware::class]);
 $router->get('/reports', 'ReportsController@index', [AuthMiddleware::class]);
 
 // Admin-only route example

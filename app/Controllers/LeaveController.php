@@ -5,9 +5,42 @@ class LeaveController extends Controller
 {
     public function index()
     {
-        $title = 'Leave Management';
-        $currentPage = 'leave_management';
+        $title = 'Leave Overview';
+        $currentPage = 'leave_overview';
         $content = '../app/Views/leave_management/index.php';
         include '../app/Views/layouts/admin.php';
     }
+
+    public function leave_records()
+    {
+        $title = 'Leave Records';
+        $currentPage = 'leave_records';
+        $content = '../app/Views/leave_management/leave_records';
+        include '../app/Views/layouts/admin.php';
+    }
+
+    public function leave_types()
+    {
+        $title = 'Leave Types';
+        $currentPage = 'leave_types';
+        $content = '../app/Views/leave_management/leave-types';
+        include '../app/Views/layouts/admin.php';
+    }
+
+    public function leave_reports()
+    {
+        $title = 'Leave Reports';
+        $currentPage = 'leave_reports';
+        $content = '../app/Views/leave_management/leave-reports';
+        include '../app/Views/layouts/admin.php';
+    }
+
+    public function leave_policies()
+    {
+        $title = 'Leave Policies';
+        $currentPage = 'leave_policies';
+        $content = '../app/Views/leave_management/leave-policies';
+        include '../app/Views/layouts/admin.php';
+    }
 }
+

@@ -40,7 +40,7 @@
                     <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'dashboard') ? 'active' : ''; ?>" href="/dashboard">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Default</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'analytics') ? 'active' : ''; ?>" href="/dashboard/analytics">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'analytics') ? 'active' : ''; ?>" href="/analyticcs">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Analytics</span></div>
                       </a><!-- more inner pages--></li>
 
@@ -56,26 +56,60 @@
                     </div>
                   </div><!-- parent pages-->
                   
-                  <a class="nav-link dropdown-indicator <?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? '' : 'collapsed'; ?>" href="#leave"
-                  role="button" data-bs-toggle="collapse" aria-expanded="<?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? 'true' : 'false'; ?>" aria-controls="user">
+                  <a class="nav-link dropdown-indicator <?php echo (in_array($currentPage, 
+                  [
+                    'leave_overview', 
+                    'leave_records',
+                    'leave_types',
+                    'leave_reports',
+                    'leave_policies'
+                  
+                  
+                  ])) ? '' : 'collapsed'; ?>" href="#leave"
+                  role="button" data-bs-toggle="collapse" aria-expanded="<?php echo (in_array($currentPage, 
+                  [
+                    'leave_overview', 
+                    'leave_records',
+                    'leave_types',
+                    'leave_reports',
+                    'leave_policies'
+                  
+                  
+                  ])) ? 'true' : 'false'; ?>" aria-controls="user">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-icon">
                         <span class="fas fa-umbrella-beach"></span>
                       </span><span class="nav-link-text ps-1">Leave</span></div>
                   </a>
-                  <ul class="nav collapse <?php echo (in_array($currentPage, ['leave_management', 'leave_types'])) ? 'show' : ''; ?>" id="leave">
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_management') ? 'active' : ''; ?>" href="/leaves">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Records</span></div>
+                  <ul class="nav collapse <?php echo (in_array($currentPage, 
+                  ['leave_overview', 
+                    'leave_records',
+                    'leave_types',
+                    'leave_reports',
+                    'leave_policies'])) ? 'show' : ''; ?>" id="leave">
+
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_overview') ? 'active' : ''; ?>" href="/leave_management">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Overview</span></div>
                       </a><!-- more inner pages--></li>
+
+
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_records') ? 'active' : ''; ?>" href="/lrecords">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave records</span></div>
+                      </a><!-- more inner pages--></li>
+
                     <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_types') ? 'active' : ''; ?>" href="/leave-types">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Types</span></div>
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave types</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_management') ? 'active' : ''; ?>" href="/leaves">
+
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_reports') ? 'active' : ''; ?>" href="/leaves-reports">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Reports</span></div>
                       </a><!-- more inner pages--></li>
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_types') ? 'active' : ''; ?>" href="/leave-types">
+
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_policies') ? 'active' : ''; ?>" href="/leave-policies">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Policies</span></div>
                       </a><!-- more inner pages--></li>
+
+
                   </ul><!-- parent pages-->
 
                   <a class="nav-link <?php echo ($currentPage === 'holidays') ? 'active' : ''; ?>" href="/holidays" role="button">

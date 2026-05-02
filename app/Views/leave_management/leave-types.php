@@ -1,4 +1,4 @@
-<?php $currentPage = 'leave_overview'; ?>
+<?php $currentPage = 'leave_types'; ?>
 
 <!-- Your page content here -->
 <div class="row g-3 mb-3">
@@ -8,7 +8,7 @@
         <h5 class="fs-9 mb-0 text-nowrap py-2 py-xl-0">Your Page Title</h5>
       </div>
       <div class="card-body">
-        <h4>leave Overview</h4>
+        <h4>leave Types</h4>
         <p>Your page content goes here.</p>
       </div>
     </div>
