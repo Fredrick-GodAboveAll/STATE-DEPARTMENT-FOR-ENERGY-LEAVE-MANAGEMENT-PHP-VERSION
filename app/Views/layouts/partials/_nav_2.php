@@ -81,10 +81,11 @@
                         <span class="fas fa-umbrella-beach"></span>
                       </span><span class="nav-link-text ps-1">Leave</span></div>
                   </a>
+                *
                   <ul class="nav collapse <?php echo (in_array($currentPage, 
                   ['leave_overview', 
                     'leave_records',
-                    'leave_types',
+                    'leave_types',  
                     'leave_reports',
                     'leave_policies'])) ? 'show' : ''; ?>" id="leave">
 
@@ -93,7 +94,7 @@
                       </a><!-- more inner pages--></li>
 
 
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_records') ? 'active' : ''; ?>" href="/lrecords">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_records') ? 'active' : ''; ?>" href="/leave-records">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave records</span></div>
                       </a><!-- more inner pages--></li>
 
@@ -101,17 +102,15 @@
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave types</span></div>
                       </a><!-- more inner pages--></li>
 
-                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_reports') ? 'active' : ''; ?>" href="/leaves-reports">
+                    <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_reports') ? 'active' : ''; ?>" href="/leave-reports">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Reports</span></div>
                       </a><!-- more inner pages--></li>
 
                     <li class="nav-item"><a class="nav-link <?php echo ($currentPage === 'leave_policies') ? 'active' : ''; ?>" href="/leave-policies">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">leave Policies</span></div>
-                      </a><!-- more inner pages--></li>
-
-
+                      </a><!-- more inner pages--></li> 
                   </ul><!-- parent pages-->
-
+                   
                   <a class="nav-link <?php echo ($currentPage === 'holidays') ? 'active' : ''; ?>" href="/holidays" role="button">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-icon"><span class="far fa-calendar"></span>
@@ -119,7 +118,6 @@
                   </a><!-- parent pages-->
                   
                 </li>
-
                 <!-- EMPLOYEES  -->
                 <li class="nav-item"><!-- label-->
                   <div class="row navbar-vertical-label-wrapper mt-3 mb-2">

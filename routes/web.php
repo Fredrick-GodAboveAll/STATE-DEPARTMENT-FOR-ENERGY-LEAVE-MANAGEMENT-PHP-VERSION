@@ -39,9 +39,9 @@ $router->get('/calender', 'ApplicationsController@index', [AuthMiddleware::class
 // Leave Management Routes 
 $router->get('/leave_management', 'LeaveController@index', [AuthMiddleware::class]);
 
-$router->get('/lrecords', 'LeaveController@leave_records', [AuthMiddleware::class]);
+$router->get('/leave-records', 'LeaveController@leave_records', [AuthMiddleware::class]);
 $router->get('/leave-types', 'LeaveController@leave_types', [AuthMiddleware::class]);
-$router->get('/leave-reports', 'LeaveController@leaves_reports', [AuthMiddleware::class]);
+$router->get('/leave-reports', 'LeaveController@leave_reports', [AuthMiddleware::class]);
 $router->get('/leave-policies', 'LeaveController@leave_policies', [AuthMiddleware::class]);
 
 // Holiday Route 

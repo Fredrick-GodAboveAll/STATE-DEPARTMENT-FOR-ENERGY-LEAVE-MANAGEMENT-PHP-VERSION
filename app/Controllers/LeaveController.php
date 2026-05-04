@@ -15,7 +15,7 @@ class LeaveController extends Controller
     {
         $title = 'Leave Records';
         $currentPage = 'leave_records';
-        $content = '../app/Views/leave_management/leave_records';
+        $content = '../app/Views/leave_management/leave_records.php';
         include '../app/Views/layouts/admin.php';
     }
 
@@ -23,7 +23,7 @@ class LeaveController extends Controller
     {
         $title = 'Leave Types';
         $currentPage = 'leave_types';
-        $content = '../app/Views/leave_management/leave-types';
+        $content = '../app/Views/leave_management/leave_types.php';
         include '../app/Views/layouts/admin.php';
     }
 
@@ -31,7 +31,7 @@ class LeaveController extends Controller
     {
         $title = 'Leave Reports';
         $currentPage = 'leave_reports';
-        $content = '../app/Views/leave_management/leave-reports';
+        $content = '../app/Views/leave_management/leave_reports.php';
         include '../app/Views/layouts/admin.php';
     }
 
@@ -39,7 +39,7 @@ class LeaveController extends Controller
     {
         $title = 'Leave Policies';
         $currentPage = 'leave_policies';
-        $content = '../app/Views/leave_management/leave-policies';
+        $content = '../app/Views/leave_management/leave_policies.php';
         include '../app/Views/layouts/admin.php';
     }
 }
